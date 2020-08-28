@@ -3,6 +3,7 @@ package com.udemy.SpringBootUnitTest.services;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -79,5 +80,39 @@ public class SimpleListMockTests {
         List<String> allValues = captor.getAllValues();
         assertEquals("Test String 1", allValues.get(0));
         assertEquals("Test String 2", allValues.get(1));
+    }
+
+    @Test
+    public void withoutSpying() {
+        ArrayList<String> mockList = mock(ArrayList.class);
+
+        System.out.println(mockList.get(0));  // null
+        System.out.println(mockList.size());  // 0
+
+        mockList.add("Test String 1");
+        mockList.add("Test String 2");
+
+        System.out.println(mockList.size());  // 0
+
+        when(mockList.size()).thenReturn(5);
+        System.out.println(mockList.size());  // 5
+    }
+
+    @Test
+    public void spying() {
+        ArrayList<String> spyList = spy(ArrayList.class);
+
+        //System.out.println(spyList.get(0));  // IndexOutOfBoundsException
+        System.out.println(spyList.size());  // 0
+
+        spyList.add("Test String 1");
+        spyList.add("Test String 2");
+
+        System.out.println(spyList.size());  // 2
+        System.out.println(spyList.get(0));  // Test String 1
+        System.out.println(spyList.get(1));  // Test String 2
+
+        when(spyList.size()).thenReturn(10);  // 행동 재정의
+        System.out.println(spyList.size());  // 10
     }
 }
