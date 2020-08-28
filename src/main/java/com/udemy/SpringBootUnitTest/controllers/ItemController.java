@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class ItemController {
 
@@ -21,5 +23,10 @@ public class ItemController {
     @GetMapping(path = "service/items/{id}")
     public Item getItemFromService(@PathVariable("id") Long id) {
         return itemService.findItem(id);
+    }
+
+    @GetMapping(path = "items")
+    public List<Item> list() {
+        return itemService.findAll();
     }
 }

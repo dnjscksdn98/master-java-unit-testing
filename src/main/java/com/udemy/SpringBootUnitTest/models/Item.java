@@ -1,7 +1,15 @@
 package com.udemy.SpringBootUnitTest.models;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
+@Entity
 public class Item {
 
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String name;
@@ -10,7 +18,10 @@ public class Item {
 
     private Integer quantity;
 
-    public Item() {
+    @Transient
+    private Integer value;
+
+    protected Item() {
 
     }
 
@@ -53,4 +64,11 @@ public class Item {
         this.quantity = quantity;
     }
 
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
 }
