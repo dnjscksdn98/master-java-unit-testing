@@ -15,8 +15,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ItemController.class)
@@ -82,5 +84,20 @@ class ItemControllerTests {
 
         String expectedResponse = "[{id:1,name:\"Mac Book Pro\",price:10,quantity:100},{id:2,name:\"IPhone\",price:5,quantity:70},{id:3,name:\"IPad\",price:7,quantity:90}]";
         JSONAssert.assertEquals(expectedResponse, result.getResponse().getContentAsString(), false);
+    }
+
+    @Test
+    public void createItem() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/items")
+                .accept(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"Ball\", \"price\": 10, \"quantity\": 100}")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        MvcResult result = mockMvc
+                .perform(request)
+                .andExpect((status().isCreated()))
+                .andExpect(header().string("location", containsString("/items/")))
+                .andReturn();
     }
 }
